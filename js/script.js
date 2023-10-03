@@ -52,3 +52,161 @@ activitiesFieldset.addEventListener("change", (event) => {
     let totalCostElement = document.getElementById("activities-cost");
     totalCostElement.innerText = `Total: $${totalCost}`;
 });
+
+// Payment info section
+const paymentMethodSelect = document.getElementById("payment");
+paymentMethodSelect.selectedIndex = 1;
+setPaymentOption(paymentMethodSelect)
+
+paymentMethodSelect.addEventListener("change", (event) => {
+    setPaymentOption(paymentMethodSelect);
+});
+
+function setPaymentOption(element) {
+    const creditCardField = document.getElementById("credit-card");
+    const paypalField = document.getElementById("paypal");
+    const bitcoinFIeld = document.getElementById("bitcoin");
+    if(element.value === "credit-card") {
+        creditCardField.style.display = "block";
+        paypalField.style.display = "none";
+        bitcoinFIeld.style.display = "none";
+    } else if(element.value === "paypal") {
+        creditCardField.style.display = "none";
+        paypalField.style.display = "block";
+        bitcoinFIeld.style.display = "none";
+    } else if(element.value === "bitcoin") {
+        creditCardField.style.display = "none";
+        paypalField.style.display = "none";
+        bitcoinFIeld.style.display = "block";
+    }
+}
+
+// Form validation
+const formElement = document.querySelector("form");
+formElement.addEventListener("submit", (event) => {
+
+    function isValidActivities() {
+        let isCheckedAtLeastOnce = false;
+        const checkBoxes = document.querySelectorAll("#activities-box label input");
+        for(let checkBox of checkBoxes) {
+            if(checkBox.checked) {
+                isCheckedAtLeastOnce = true;
+                break;
+            } else {
+                isCheckedAtLeastOnce = false;
+            }
+        }
+        return isCheckedAtLeastOnce;
+    }
+
+    function isValidName() {
+        return document.getElementById("name").value !== "" ;
+    }
+
+    function isValidEmail() {
+        const email = document.getElementById("email").value;
+        if (email === "") {return false};
+        const regex = /^[.a-z0-9]+[@][.a-z0-9]+[.][.a-z]+$/i
+        return regex.test(email);
+    }
+
+    function isValidCreditCard() {
+        const paymentMethodSelect = document.getElementById("payment");
+        let result = {};
+        if(paymentMethodSelect.value === "credit-card") {
+            const ccInput = document.getElementById("cc-num");
+            const zipInput = document.getElementById("zip");
+            const cvvInput = document.getElementById("cvv");
+            const regexCC = /^[0-9]{13,16}$/i;
+            const regexZip = /^[0-9]{5}$/i;
+            const regexCvv = /^[0-9]{3}$/i;
+            result = {
+                isValidCreditCard: {
+                    isValid: regexCC.test(ccInput.value),
+                    returnElement: ccInput
+                },
+                isValidZip: {
+                    isValid: regexZip.test(zipInput.value),
+                    returnElement: zipInput
+                },
+                isValidCvv: {
+                    isValid: regexCvv.test(cvvInput.value),
+                    returnElement: cvvInput
+                },
+            };
+            return result
+        } else {
+            return result
+        }
+    }
+
+    function displayValidationErrors() {
+        const fieldSetActivities = document.getElementById("activities");
+        const nameElement = document.getElementById("name");
+        const emailElement = document.getElementById("email");
+
+        if(!isValidActivities()) {
+            fieldSetActivities.classList.add("not-valid");
+            fieldSetActivities.classList.remove("valid");
+        } else {
+            fieldSetActivities.classList.add("valid");
+            fieldSetActivities.classList.remove("not-valid");
+        }
+        
+        if(!isValidCreditCard().isValidCreditCard.isValid) {
+            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("not-valid");
+            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("valid");
+        } else {
+            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("valid");
+            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("not-valid");
+        }
+
+        if(!isValidCreditCard().isValidZip.isValid) {
+            isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("not-valid");
+            isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("valid");
+        } else {
+            isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("valid");
+            isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("not-valid");
+        }
+
+        if(!isValidCreditCard().isValidCvv.isValid) {
+            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("not-valid");
+            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("valid");
+        } else {
+            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("valid");
+            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("not-valid");
+        }
+        
+        if(!isValidName()) {
+            nameElement.parentElement.classList.add("not-valid");
+            nameElement.parentElement.classList.remove("valid");
+        } else {
+            nameElement.parentElement.classList.add("valid");
+            nameElement.parentElement.classList.remove("not-valid");
+        }
+        
+        if(!isValidEmail()) {
+            emailElement.parentElement.classList.add("not-valid");
+            emailElement.parentElement.classList.remove("valid");
+        } else {
+            emailElement.parentElement.classList.add("valid");
+            emailElement.parentElement.classList.remove("not-valid");
+        }
+    }
+
+    // Final check if the form is valid
+    if(isValidActivities() &&
+        (
+            isValidCreditCard().isValidCreditCard.isValid &&
+            isValidCreditCard().isValidCvv.isValid && 
+            isValidCreditCard().isValidZip.isValid
+        )&&
+        isValidEmail() &&
+        isValidName()) {
+        event.preventDefault();
+        console.log("Valid form");
+    } else {
+        event.preventDefault();
+        displayValidationErrors();
+    }
+});
