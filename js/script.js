@@ -145,52 +145,70 @@ formElement.addEventListener("submit", (event) => {
         const nameElement = document.getElementById("name");
         const emailElement = document.getElementById("email");
 
+        const activitiesHint = document.getElementById("activities-hint");
         if(!isValidActivities()) {
             fieldSetActivities.classList.add("not-valid");
             fieldSetActivities.classList.remove("valid");
+            activitiesHint.classList.remove("hint");
         } else {
             fieldSetActivities.classList.add("valid");
             fieldSetActivities.classList.remove("not-valid");
+            activitiesHint.classList.add("hint");
         }
         
+        const ccHint = document.getElementById("cc-hint");
         if(!isValidCreditCard().isValidCreditCard.isValid) {
             isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("not-valid");
             isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("valid");
+            ccHint.classList.remove("hint");
         } else {
             isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("valid");
             isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("not-valid");
+            ccHint.classList.add("hint");
         }
 
+        const zipHint = document.getElementById("zip-hint");
         if(!isValidCreditCard().isValidZip.isValid) {
             isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("not-valid");
             isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("valid");
+            zipHint.classList.remove("hint");
         } else {
             isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("valid");
             isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("not-valid");
+            zipHint.classList.add("hint");
         }
 
+        const cvvHint = document.getElementById("cvv-hint");
         if(!isValidCreditCard().isValidCvv.isValid) {
             isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("not-valid");
             isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("valid");
+            cvvHint.classList.remove("hint");
         } else {
             isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("valid");
             isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("not-valid");
+            cvvHint.classList.add("hint");
         }
         
+        const nameHint = document.getElementById("name-hint");
         if(!isValidName()) {
             nameElement.parentElement.classList.add("not-valid");
             nameElement.parentElement.classList.remove("valid");
+            nameHint.classList.remove("hint");
         } else {
             nameElement.parentElement.classList.add("valid");
             nameElement.parentElement.classList.remove("not-valid");
+            nameHint.classList.add("hint");
         }
-        
+
+        const emailHint = document.getElementById("email-hint");
         if(!isValidEmail()) {
             emailElement.parentElement.classList.add("not-valid");
             emailElement.parentElement.classList.remove("valid");
+            emailHint.classList.remove("hint");
         } else {
             emailElement.parentElement.classList.add("valid");
             emailElement.parentElement.classList.remove("not-valid");
+            emailHint.classList.add("hint");
         }
     }
 
