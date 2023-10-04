@@ -62,6 +62,10 @@ paymentMethodSelect.addEventListener("change", (event) => {
     setPaymentOption(paymentMethodSelect);
 });
 
+/**
+ * Check different type of payments and display according to user's choice
+ * @param {*} element The payment element 
+ */
 function setPaymentOption(element) {
     const creditCardField = document.getElementById("credit-card");
     const paypalField = document.getElementById("paypal");
@@ -85,6 +89,10 @@ function setPaymentOption(element) {
 const formElement = document.querySelector("form");
 formElement.addEventListener("submit", (event) => {
 
+    /**
+     * Check if activities checkboxes are valid
+     * @returns True if activites checkboxes, else false
+     */
     function isValidActivities() {
         let isCheckedAtLeastOnce = false;
         const checkBoxes = document.querySelectorAll("#activities-box label input");
@@ -99,10 +107,18 @@ formElement.addEventListener("submit", (event) => {
         return isCheckedAtLeastOnce;
     }
 
+    /**
+     * Check if user's name is valid
+     * @returns True if valid name, else false
+     */
     function isValidName() {
         return document.getElementById("name").value !== "" ;
     }
 
+    /**
+     * Check if email is valid
+     * @returns True if valid email, else false
+     */
     function isValidEmail() {
         const email = document.getElementById("email").value;
         if (email === "") {return false};
@@ -110,6 +126,10 @@ formElement.addEventListener("submit", (event) => {
         return regex.test(email);
     }
 
+    /**
+     * Check if credit card field is valid. This includes credit card number, ZIP, and CVV
+     * @returns Returns an obect with the a boolean (if field is valid) and a return element (the element that it's checking for validation)
+     */
     function isValidCreditCard() {
         const paymentMethodSelect = document.getElementById("payment");
         let result = {};
@@ -140,75 +160,86 @@ formElement.addEventListener("submit", (event) => {
         }
     }
 
+    /**
+     * Based on the validation check, display validation errors
+     */
     function displayValidationErrors() {
         const fieldSetActivities = document.getElementById("activities");
         const nameElement = document.getElementById("name");
         const emailElement = document.getElementById("email");
 
+        function setValidClassList(classList, hintClasslist) {
+            classList.add("not-valid");
+            classList.remove("valid");
+            hintClasslist.remove("hint")
+        }
+
+        function setInvalidClassList(classList, hintClasslist) {
+            classList.add("valid");
+            classList.remove("not-valid");
+            hintClasslist.add("hint");
+        }
+
         const activitiesHint = document.getElementById("activities-hint");
         if(!isValidActivities()) {
-            fieldSetActivities.classList.add("not-valid");
-            fieldSetActivities.classList.remove("valid");
-            activitiesHint.classList.remove("hint");
+            setValidClassList(fieldSetActivities.classList, activitiesHint.classList);
         } else {
-            fieldSetActivities.classList.add("valid");
-            fieldSetActivities.classList.remove("not-valid");
-            activitiesHint.classList.add("hint");
+            setInvalidClassList(fieldSetActivities.classList, activitiesHint.classList);
         }
         
         const ccHint = document.getElementById("cc-hint");
         if(!isValidCreditCard().isValidCreditCard.isValid) {
-            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("not-valid");
-            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("valid");
-            ccHint.classList.remove("hint");
+            setValidClassList(
+                isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
+                ccHint.classList);
         } else {
-            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.add("valid");
-            isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList.remove("not-valid");
-            ccHint.classList.add("hint");
+            setInvalidClassList(
+                isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
+                ccHint.classList);
         }
 
         const zipHint = document.getElementById("zip-hint");
         if(!isValidCreditCard().isValidZip.isValid) {
-            isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("not-valid");
-            isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("valid");
-            zipHint.classList.remove("hint");
+            setValidClassList(
+                isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
+                zipHint.classList);
         } else {
-            isValidCreditCard().isValidZip.returnElement.parentElement.classList.add("valid");
-            isValidCreditCard().isValidZip.returnElement.parentElement.classList.remove("not-valid");
-            zipHint.classList.add("hint");
+            setInvalidClassList(
+                isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
+                zipHint.classList);
         }
 
         const cvvHint = document.getElementById("cvv-hint");
         if(!isValidCreditCard().isValidCvv.isValid) {
-            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("not-valid");
-            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("valid");
-            cvvHint.classList.remove("hint");
+            setValidClassList(
+                isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
+                cvvHint.classList);
         } else {
-            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.add("valid");
-            isValidCreditCard().isValidCvv.returnElement.parentElement.classList.remove("not-valid");
-            cvvHint.classList.add("hint");
+            setInvalidClassList(
+                isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
+                cvvHint.classList);
         }
         
         const nameHint = document.getElementById("name-hint");
         if(!isValidName()) {
-            nameElement.parentElement.classList.add("not-valid");
-            nameElement.parentElement.classList.remove("valid");
-            nameHint.classList.remove("hint");
+            setValidClassList(
+                nameElement.parentElement.classList, 
+                nameHint.classList);
         } else {
-            nameElement.parentElement.classList.add("valid");
-            nameElement.parentElement.classList.remove("not-valid");
-            nameHint.classList.add("hint");
+            setInvalidClassList(
+                nameElement.parentElement.classList, 
+                nameHint.classList);
         }
 
         const emailHint = document.getElementById("email-hint");
         if(!isValidEmail()) {
-            emailElement.parentElement.classList.add("not-valid");
-            emailElement.parentElement.classList.remove("valid");
-            emailHint.classList.remove("hint");
+            setValidClassList(
+                emailElement.parentElement.classList, 
+                emailHint.classList);
         } else {
-            emailElement.parentElement.classList.add("valid");
-            emailElement.parentElement.classList.remove("not-valid");
-            emailHint.classList.add("hint");
+            setInvalidClassList(
+                emailElement.parentElement.classList, 
+                emailHint.classList);
         }
     }
 
