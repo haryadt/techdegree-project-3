@@ -156,6 +156,20 @@ formElement.addEventListener("submit", (event) => {
             };
             return result
         } else {
+            result = {
+                isValidCreditCard: {
+                    isValid: true,
+                    returnElement: ""
+                },
+                isValidZip: {
+                    isValid: true,
+                    returnElement: ""
+                },
+                isValidCvv: {
+                    isValid: true,
+                    returnElement: ""
+                },
+            };
             return result
         }
     }
@@ -188,38 +202,46 @@ formElement.addEventListener("submit", (event) => {
         }
         
         const ccHint = document.getElementById("cc-hint");
-        if(!isValidCreditCard().isValidCreditCard.isValid) {
-            setValidClassList(
-                isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
-                ccHint.classList);
-        } else {
-            setInvalidClassList(
-                isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
-                ccHint.classList);
-        }
 
-        const zipHint = document.getElementById("zip-hint");
-        if(!isValidCreditCard().isValidZip.isValid) {
-            setValidClassList(
-                isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
-                zipHint.classList);
-        } else {
-            setInvalidClassList(
-                isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
-                zipHint.classList);
-        }
-
-        const cvvHint = document.getElementById("cvv-hint");
-        if(!isValidCreditCard().isValidCvv.isValid) {
-            setValidClassList(
-                isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
-                cvvHint.classList);
-        } else {
-            setInvalidClassList(
-                isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
-                cvvHint.classList);
+        // Make sure that the return element is not empty before checking if it is valid
+        if(isValidCreditCard().isValidCreditCard.returnElement) {
+            // Check if credit card is valid
+            if(!isValidCreditCard().isValidCreditCard.isValid) {
+                setValidClassList(
+                    isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
+                    ccHint.classList);
+            } else {
+                setInvalidClassList(
+                    isValidCreditCard().isValidCreditCard.returnElement.parentElement.classList, 
+                    ccHint.classList);
+            }
+            
+            // Check if zip code is valid
+            const zipHint = document.getElementById("zip-hint");
+            if(!isValidCreditCard().isValidZip.isValid) {
+                setValidClassList(
+                    isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
+                    zipHint.classList);
+            } else {
+                setInvalidClassList(
+                    isValidCreditCard().isValidZip.returnElement.parentElement.classList, 
+                    zipHint.classList);
+            }
+            
+            // Check if CVV is valid
+            const cvvHint = document.getElementById("cvv-hint");
+            if(!isValidCreditCard().isValidCvv.isValid) {
+                setValidClassList(
+                    isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
+                    cvvHint.classList);
+            } else {
+                setInvalidClassList(
+                    isValidCreditCard().isValidCvv.returnElement.parentElement.classList, 
+                    cvvHint.classList);
+            }
         }
         
+        // Check if name is not empty
         const nameHint = document.getElementById("name-hint");
         if(!isValidName()) {
             setValidClassList(
@@ -231,6 +253,7 @@ formElement.addEventListener("submit", (event) => {
                 nameHint.classList);
         }
 
+        // Check if email is properly formatted
         const emailHint = document.getElementById("email-hint");
         if(!isValidEmail()) {
             setValidClassList(
@@ -249,11 +272,9 @@ formElement.addEventListener("submit", (event) => {
             isValidCreditCard().isValidCreditCard.isValid &&
             isValidCreditCard().isValidCvv.isValid && 
             isValidCreditCard().isValidZip.isValid
-        )&&
+        ) &&
         isValidEmail() &&
         isValidName()) {
-        event.preventDefault();
-        console.log("Valid form");
     } else {
         event.preventDefault();
         displayValidationErrors();
