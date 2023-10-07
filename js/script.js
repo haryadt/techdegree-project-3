@@ -2,6 +2,21 @@
 const nameField = document.getElementById("name");
 nameField.focus();
 
+// Tab through checkboxes
+const checkboxes = document.querySelectorAll(`input[type="checkbox"]`);
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("focus", (event) => {
+        checkbox.classList.add("focus");
+        checkbox.parentElement.classList.add("focus");
+    });
+    
+    checkbox.addEventListener("blur", (event) => {
+        checkbox.classList.remove("focus");
+        checkbox.parentElement.classList.remove("focus");
+    });
+});
+
+
 //Hide "other job role" when "other" is not selected in the job role dropdown list
 const jobRoleDropdown = document.getElementById("title");
 const otherJobRoleText = document.getElementById("other-job-role");
@@ -265,7 +280,7 @@ formElement.addEventListener("submit", (event) => {
                 emailHint.classList);
         }
     }
-
+    
     // Final check if the form is valid
     if(isValidActivities() &&
         (
