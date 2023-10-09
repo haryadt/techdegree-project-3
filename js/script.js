@@ -37,7 +37,10 @@ colorSelect.setAttribute("disabled", "disabled");
 const designSelect = document.getElementById("design");
 
 designSelect.addEventListener("change", (event) => {
+    
     colorSelect.removeAttribute("disabled");
+    colorSelect.selectedIndex = 0;
+
     const selectedValue = event.target.value;
     const designSelected = document.querySelectorAll(`#color option[data-theme="${selectedValue}"]`);
     const designSelectOptions = document.querySelectorAll("#color option");
